@@ -1,0 +1,61 @@
+*$
+* LM393
+* BJT COMPARATOR  'Macromodel' Subcircuit
+* MANUFACTURER: ROHM CO., LTD.
+* All Rights Reserved Copyright (c) Bee Technologies Inc. 2008
+*                          update 2009 Apr. 13 by Rohm Co., Ltd.
+*
+* This model is not spport following characters.
+* 1. Temperature  character  is supported only nominal.
+* 2. Curcuit current is not support.
+* 3. PSRR is not support.
+* 4. CMRR is not defined.
+* Please refer to our tchnical note .
+*
+*
+* CONNECTIONS:   OUTPUT 1
+*                | INVERTING INPUT 1
+*                | | NON INVERTING INPUT 1
+*                | | | NEGATIVE POWER SUPPLY
+*                | | | | NON INVERTING INPUT 2
+*                | | | | | INVERTING INPUT 2
+*                | | | | | | OUTPUT 2
+*                | | | | | | | POSITIVE POWER SUPPLY
+*                | | | | | | | |
+
+*BJT COMPARATOR
+*All Rights Reserved Copyright (c) Bee Technologies Inc. 2008
+.subckt LM393   1 2 3 4 5 6 7 8
+X_U1 3 2 8 4 1 LM393_s
+X_U2 5 6 8 4 7 LM393_s
+.ends
+*$
+.subckt LM393_s 1 2 3 4 5
+Q_Q1         9 21 7 qin2 
+V_v1         10 11 DC 0 AC 0 0
+Q_Q6         14 12 4 qoc 
+Q_Q2         8 22 7 qin1 
+R_rp         4 3  100E3  
+I_iee         3 7 DC 100.0E-6  
+E_e1         10 4 9 4 1
+V_VC         5 15 0Vdc
+D_dp         4 3 dx 
+Q_Q3         9 8 4 qmo1 
+E_E2         15 14 VALUE { Limit(-0.033998+25.034*I(V_VC),0,2) }
+Q_Q4         8 8 4 qmi 
+V_vi1         21 2 DC 0.750085 AC 0 0
+G_G1         9 3 VALUE { I(V_v1) }
+V_vi2         22 1 DC 0.75 AC 0 0
+I_icc         3 12 DC 250.0E-6  
+Q_Q5         12 11 4 qmo2
+.model qin1 PNP(Is=800.0E-18 Bf=948.45)
+.model qin2 PNP(Is=800.0E-18 Bf=1044.55)
+.model qmi NPN(Is=800.0E-18 Bf=1002)
+.model qmo1 NPN(Is=800.0E-18 Bf=1000)
+.model qmo2 NPN(Is=800.0E-18 Bf=65 VAF=5000
++ Cjc=1E-15 Tr=63.8E-8)
+.model qoc NPN(Is=4.417E-9 Bf=59.5 VAF=10
++ Cjc=1E-15 Tf=6.2E-9 Tr=2.771E-6)
+.model dx  D(Is=800.0E-18)
+.ends
+*$
